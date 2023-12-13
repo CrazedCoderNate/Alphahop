@@ -18,7 +18,7 @@ class HalfHop:
         inplace (bool): If set to :obj:`False`, will not modify the input graph
             and will instead return a new graph.
     """
-    def __init__(self, alpha=0.5, p=1.0, inplace=True):
+    def __init__(self, alpha=0.7, p=1.0, inplace=True):
         assert 0. <= p <= 1., f"p must be in [0, 1], got {p}"
         assert 0. <= alpha <= 1., f"alpha must be in [0, 1], got {alpha}"
 
@@ -45,7 +45,7 @@ class HalfHop:
             edge_index_to_halfhop = edge_index
             edge_index_to_keep = None
         else:
-            # randomly sample nodes and half-hop their edges
+            # randomness element
             node_mask = torch.rand(data.num_nodes, device=device) < self.p
             _, _, edge_mask = subgraph(node_mask, torch.stack([edge_index[1], edge_index[1]], dim=0), return_edge_mask=True)
             edge_index_to_halfhop = edge_index[:, edge_mask]
