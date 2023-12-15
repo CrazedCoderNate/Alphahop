@@ -39,17 +39,7 @@ class HalfHop:
         edge_index_self_loop = edge_index[:, self_loop_mask]
         edge_index = edge_index[:, ~self_loop_mask]
 
-        # decide which edges to half-hop
-        if self.p == 1.:
-            # all edges are half-hopped
-            edge_index_to_halfhop = edge_index
-            edge_index_to_keep = None
-        else:
-            # randomness element
-            node_mask = torch.rand(data.num_nodes, device=device) < self.p
-            _, _, edge_mask = subgraph(node_mask, torch.stack([edge_index[1], edge_index[1]], dim=0), return_edge_mask=True)
-            edge_index_to_halfhop = edge_index[:, edge_mask]
-            edge_index_to_keep = edge_index[:, ~edge_mask]
+       
 
         # add new slow nodes, and use linear interpolation to initialize their features
         slow_node_ids = torch.arange(edge_index_to_halfhop.size(1), device=device) + data.num_nodes
