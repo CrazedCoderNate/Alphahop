@@ -18,7 +18,7 @@ class HalfHop:
         inplace (bool): If set to :obj:`False`, will not modify the input graph
             and will instead return a new graph.
     """
-    def __init__(self, alpha=0.7, p=1.0, inplace=True):
+    def __init__(self, alpha=0.68, p=0.85, inplace=True):
         assert 0. <= p <= 1., f"p must be in [0, 1], got {p}"
         assert 0. <= alpha <= 1., f"alpha must be in [0, 1], got {alpha}"
 
