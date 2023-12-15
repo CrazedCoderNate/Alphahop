@@ -24,7 +24,17 @@ class HalfHop:
 
         self.p = p
         self.alpha = alpha
-
+         # decide which edges to half-hop
+        if self.p == 1.:
+            # all edges are half-hopped
+            edge_index_to_halfhop = edge_index
+            edge_index_to_keep = None
+        else:
+            # randomness element
+            node_mask = torch.rand(data.num_nodes, device=device) < self.p
+            _, _, edge_mask = subgraph(node_mask, torch.stack([edge_index[1], edge_index[1]], dim=0), return_edge_mask=True)
+            edge_index_to_halfhop = edge_index[:, edge_mask]
+            edge_index_to_keep = edge_index[:, ~edge_mask]
         self.inplace = inplace
 
     def __call__(self, data):
